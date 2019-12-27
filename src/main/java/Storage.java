@@ -9,7 +9,7 @@ public class Storage {
     private final static String mainData = "abcdefghklmnoprstufxasldhbasldhbasdaslhbasfadvldashbdashgdvasljdvjasdbasdal";
     private static int left;
     private static int right;
-    private static Socket responder;
+    private static ZMQ.Socket responder;
 
     private final static String BACKEND_ADRESS = "tcp://localhost:5560";
 
@@ -28,7 +28,7 @@ public class Storage {
 
         ZContext context = new ZContext();
 
-        ZMQ.Socket responder = context.createSocket(SocketType.DEALER);
+        responder = context.createSocket(SocketType.DEALER);
         responder.connect(BACKEND_ADRESS);
 
         long start = System.currentTimeMillis();
