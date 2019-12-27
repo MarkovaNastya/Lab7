@@ -50,7 +50,6 @@ public class Proxy {
                 while (true) {
                     message = ZMsg.recvMsg(frontend);
                     more = frontend.hasReceiveMore();
-                    System.out.println(message);
 
                     ZFrame adress = message.pop();
                     ZFrame nullFrame = message.pop();
@@ -75,7 +74,6 @@ public class Proxy {
                 while (true) {
                     message = ZMsg.recvMsg(backend);
                     more = backend.hasReceiveMore();
-                    System.out.println(message);
 
                     ZFrame adress = message.pop();
                     String command = message.popString();

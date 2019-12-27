@@ -32,7 +32,6 @@ public class Storage {
         }
 
         StringBuilder data = new StringBuilder(mainData.substring(left, right));
-        System.out.println(data);
 
         ZContext context = new ZContext();
 
@@ -66,7 +65,6 @@ public class Storage {
                     ZFrame adress = msgReceive.pop();
                     msg.add(adress);
                     msg.add("" + data.charAt(index - left));
-                    System.out.println(msg);
                     msg.send(responder);
 
                 } else if (msgReceive.size() == 3) { //SET
@@ -78,7 +76,6 @@ public class Storage {
                     msg.add(adress);
                     data.setCharAt(index - left, value.charAt(0));
                     msg.add(CHANGED);
-                    System.out.println(msg);
                     msg.send(responder);
 
                 }
