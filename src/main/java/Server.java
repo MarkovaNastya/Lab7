@@ -38,6 +38,18 @@ public class Server {
                     more = frontend.hasReceiveMore();
                     System.out.println(message);
 
+                    ZFrame adress = message.pop();
+                    ZFrame nul = message.pop();
+
+                    String command = message.popString();
+
+                    if (command.equals("GET")) {
+                        String index = message.popString();
+                        System.out.println(index);
+                    } else if (command.equals("SET")) {
+
+                    }
+
 
                     for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
 
