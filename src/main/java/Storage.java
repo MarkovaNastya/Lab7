@@ -39,7 +39,7 @@ public class Storage {
                 putMessageTogetherAndSend("I STILL ALIVE");
             }
 
-            ZMsg msgReceive = ZMsg.recvMsg(responder);
+//            ZMsg msgReceive = ZMsg.recvMsg(responder);
 
 
 
