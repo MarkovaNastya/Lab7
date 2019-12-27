@@ -48,7 +48,7 @@ public class Storage {
                 ArrayList<String> frames = new ArrayList<>();
                 frames.add("GET");
                 frames.add(adress);
-                frames.add(String.valueOf(data.charAt(indexInteger)));
+                frames.add(String.valueOf(data.charAt(indexInteger - left + 1)));
 
                 putCommandMessageTogetherAndSend(frames);
 
@@ -56,7 +56,7 @@ public class Storage {
                 int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
                 String setElem = msgReceive.popString();
 
-                data.setCharAt(indexInteger, setElem.charAt(0));
+                data.setCharAt(indexInteger - left + 1, setElem.charAt(0));
 
                 ArrayList<String> frames = new ArrayList<>();
                 frames.add("SET");
