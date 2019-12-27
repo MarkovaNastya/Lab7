@@ -7,11 +7,14 @@ import java.util.Scanner;
 
 
 public class Client {
+
+    private final static String FRONTEND_ADRESS = "tcp://localhost:5559";
+
     public static void main(String[] args) {
 
         ZMQ.Context context = ZMQ.context(1);
-        Socket responder = context.socket(SocketType.REQ);
-        responder.connect("tcp://localhost:5559");
+        Socket frontend = context.socket(SocketType.REQ);
+        frontend.connect(FRONTEND_ADRESS);
 
         Scanner in = new Scanner(System.in);
 
@@ -30,12 +33,13 @@ public class Client {
                 for (int i = 0; i < commandSplit.length; i++) {
                     msg.add(commandSplit[i]);
                 }
-                msg.send(responder);
+                msg.send(frontend);
             }
 
-            ZMsg response = ZMsg.recvMsg(responder);
+            ZMsg response = ZMsg.recvMsg(frontend);
             System.out.println(response);
 
+            response.destroy();
         }
 
     }

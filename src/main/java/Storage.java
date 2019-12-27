@@ -11,6 +11,9 @@ public class Storage {
     private static int right;
     private static Socket responder;
 
+    private final static String BACKEND_ADRESS = "tcp://localhost:5560";
+
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         left = in.nextInt();
@@ -25,7 +28,7 @@ public class Storage {
 
         ZMQ.Context context = ZMQ.context(1);
         responder = context.socket(SocketType.DEALER);
-        responder.connect("tcp://localhost:5560");
+        responder.connect(BACKEND_ADRESS);
         long start = System.currentTimeMillis();
 
 

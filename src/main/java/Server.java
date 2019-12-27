@@ -14,15 +14,19 @@ public class Server {
     private static Socket frontend;
     private static Socket backend;
 
+    private final static String BACKEND_ADRESS = "tcp://localhost:5560";
+    private final static String FRONTEND_ADRESS = "tcp://localhost:5559";
+
+
     public static void main(String[] args) {
 
         ZMQ.Context context = ZMQ.context(1);
 
         frontend = context.socket(SocketType.ROUTER);
-        frontend.bind("tcp://localhost:5559");
+        frontend.bind(FRONTEND_ADRESS);
 
         backend = context.socket(SocketType.ROUTER);
-        backend.bind("tcp://localhost:5560");
+        backend.bind(BACKEND_ADRESS);
 
         ZMQ.Poller items = context.poller(2);
         items.register(frontend, ZMQ.Poller.POLLIN);
