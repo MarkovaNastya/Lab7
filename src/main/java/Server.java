@@ -60,55 +60,11 @@ public class Server {
                     String command = message.popString();
 
                     if (command.equals(GET)) {
-                        ZFrame index = message.pop();
-                        boolean detect = false;
-                        int indexInteger = Integer.parseInt(String.valueOf(index));
-
-                        for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
-                            if (indexInteger >= storage.getKey().getKey() && indexInteger < storage.getKey().getValue() && isAlive(storage)) {
-                                detect = true;
-                                ArrayList<ZFrame> frames = new ArrayList<>();
-                                frames.add(storage.getValue().getKey().duplicate());
-                                frames.add(adress);
-                                frames.add(index);
-                                putMessageTogetherAndSendToBackend(frames);
-                                break;
-
-                            }
-                        }
-
-                        if (!detect) {
-                            errorMsg(adress);
-                        }
-
+                        messageHandler(adress, message, GET);
                     } else if (command.equals(SET)) {
-
-                        ZFrame index = message.pop();
-                        boolean detect = false;
-                        int indexInteger = Integer.parseInt(String.valueOf(index));
-                        ZFrame elem = message.pop();
-
-                        for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
-                            if (indexInteger >= storage.getKey().getKey() && indexInteger < storage.getKey().getValue() && isAlive(storage)) {
-                                detect = true;
-                                ArrayList<ZFrame> frames = new ArrayList<>();
-                                frames.add(storage.getValue().getKey().duplicate());
-                                frames.add(adress);
-                                frames.add(index);
-                                frames.add(elem);
-                                putMessageTogetherAndSendToBackend(frames);
-                                break;
-
-                            }
-                        }
-
-                        if (!detect) {
-                            errorMsg(adress);
-                        }
-
+                        messageHandler(adress, message, SET);
                     }
-
-
+                    
                     if (!more) {
                         break;
                     }
@@ -179,5 +135,41 @@ public class Server {
         eMsg.wrap(adress);
         eMsg.add("Not found");
         eMsg.send(frontend);
+    }
+
+    private static void messageHandler(ZFrame adress, ZMsg message, String command) {
+
+
+            ZFrame index = message.pop();
+            boolean detect = false;
+            int indexInteger = Integer.parseInt(String.valueOf(index));
+
+            ZFrame elem = null;
+            if (command.equals(SET)) {
+                elem = message.pop();
+            }
+
+            for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
+                if (indexInteger >= storage.getKey().getKey() && indexInteger < storage.getKey().getValue() && isAlive(storage)) {
+                    detect = true;
+                    ArrayList<ZFrame> frames = new ArrayList<>();
+                    frames.add(storage.getValue().getKey().duplicate());
+                    frames.add(adress);
+                    frames.add(index);
+
+                    if (command.equals(SET)) {
+                        frames.add(elem);
+                    }
+                    putMessageTogetherAndSendToBackend(frames);
+                    break;
+
+                }
+            }
+
+            if (!detect) {
+                errorMsg(adress);
+            }
+
+
     }
 }
