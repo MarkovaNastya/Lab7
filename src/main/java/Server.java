@@ -24,7 +24,7 @@ public class Server {
     private final static int TIMEOUT_MS = 5000;
     private final static int DOUBLE_TIMEOUT_MS = TIMEOUT_MS * 2;
 
-    
+
     public static void main(String[] args) {
 
         ZContext context = new ZContext();
