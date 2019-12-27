@@ -28,7 +28,7 @@ public class Storage {
         left = in.nextInt();
         right = in.nextInt();
 
-        if (left > right || left > mainData.length() - 1 || right > mainData.length() - 1) {
+        if (left >= right || left > mainData.length() - 1 || right > mainData.length() - 1) {
             System.out.println("wrong borders");
             return;
         }

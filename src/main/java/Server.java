@@ -120,11 +120,9 @@ public class Server {
 
     private static void putMessageTogetherAndSendToBackend(ArrayList<ZFrame> frames) {
         ZMsg msg = new ZMsg();
-
         for (ZFrame frame : frames) {
             msg.add(frame);
         }
-
         msg.send(backend);
     }
 
