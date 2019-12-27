@@ -16,6 +16,12 @@ public class Server {
 
     private final static String BACKEND_ADRESS = "tcp://localhost:5560";
     private final static String FRONTEND_ADRESS = "tcp://localhost:5559";
+    private final static String NEW = "NEW";
+    private final static String GET = "GET";
+    private final static String SET = "SET";
+    private final static String STILL_ALIVE = "STILL ALIVE";
+    private final static String DOUBLE_TRAIT = "//";
+
 
 
     public static void main(String[] args) {
@@ -50,7 +56,7 @@ public class Server {
 
                     String command = message.popString();
 
-                    if (command.equals("GET")) {
+                    if (command.equals(GET)) {
                         ZFrame index = message.pop();
                         int indexInteger = Integer.parseInt(String.valueOf(index));
 
@@ -67,7 +73,7 @@ public class Server {
                             }
                         }
 
-                    } else if (command.equals("SET")) {
+                    } else if (command.equals(SET)) {
 
                         ZFrame index = message.pop();
                         int indexInteger = Integer.parseInt(String.valueOf(index));
@@ -107,16 +113,16 @@ public class Server {
                     ZFrame adress = message.pop();
                     String command = message.popString();
 
-                    if (command.equals("NEW")) {
-                        String[] interval = message.popString().split("//");
+                    if (command.equals(NEW)) {
+                        String[] interval = message.popString().split(DOUBLE_TRAIT);
 
                         storages.put(
                                 new Pair<>(Integer.parseInt(interval[0]), Integer.parseInt(interval[1])),
                                 new Pair<>(adress, System.currentTimeMillis())
                         );
 
-                    } else if (command.equals("I STILL ALIVE")) {
-                        String[] interval = message.popString().split("//");
+                    } else if (command.equals(STILL_ALIVE)) {
+                        String[] interval = message.popString().split(DOUBLE_TRAIT);
 
                         storages.replace(
                                 new Pair<>(Integer.parseInt(interval[0]), Integer.parseInt(interval[1])),

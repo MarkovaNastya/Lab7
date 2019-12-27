@@ -18,6 +18,7 @@ public class Storage {
     private final static String SET = "SET";
     private final static String CHANGED = "Character changed";
     private final static String STILL_ALIVE = "STILL ALIVE";
+    private final static String DOUBLE_TRAIT = "//";
 
 
 
@@ -91,7 +92,7 @@ public class Storage {
     private static void putServerMessageTogetherAndSend(String frame) {
         ZMsg msg = new ZMsg();
         msg.add(frame);
-        msg.add(left + "//" + right);
+        msg.add(left + DOUBLE_TRAIT + right);
         msg.send(responder);
     }
 
