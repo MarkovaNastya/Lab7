@@ -27,15 +27,21 @@ public class Client {
 
             if (commandSplit[0].equals("GET")) {
                 ZMsg msg = new ZMsg();
-                msg.add()
+                msg.add(commandSplit[0]);
+                msg.add(commandSplit[1]);
+                msg.send(responder);
             }
 
-
             if (commandSplit[0].equals("SET")) {
-
+                ZMsg msg = new ZMsg();
+                msg.add(commandSplit[0]);
+                msg.add(commandSplit[1]);
+                msg.add(commandSplit[2]);
+                msg.send(responder);
             }
 
         }
+        
 
     }
 }
