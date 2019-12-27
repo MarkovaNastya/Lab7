@@ -36,13 +36,14 @@ public class Client {
                     msg.add(commandSplit[i]);
                 }
                 msg.send(frontend);
+
+                ZMsg response = ZMsg.recvMsg(frontend);
+                System.out.println(response.pop().toString());
+
+                response.destroy();
             }
 
-            ZMsg response = ZMsg.recvMsg(frontend);
-            System.out.println(response);
-//            System.out.println(response.pop().toString());
 
-//            response.destroy();
         }
 
     }

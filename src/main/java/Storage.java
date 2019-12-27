@@ -7,11 +7,18 @@ import java.util.Scanner;
 public class Storage {
 
     private final static String mainData = "abcdefghklmnoprstufxasldhbasldhbasdaslhbasfadvldashbdashgdvasljdvjasdbasdal";
+
     private static int left;
     private static int right;
     private static ZMQ.Socket responder;
 
     private final static String BACKEND_ADRESS = "tcp://localhost:5560";
+    private final static String NEW = "NEW";
+    private final static String GET = "GET";
+    private final static String SET = "SET";
+    private final static String CHANGED = "Character changed";
+    private final static String STILL_ALIVE = "STILL ALIVE";
+
 
 
     public static void main(String[] args) {
@@ -20,7 +27,7 @@ public class Storage {
         right = in.nextInt();
 
         if (left > right || left > mainData.length() - 1 || right > mainData.length() - 1) {
-            System.out.println("wrond borders");
+            System.out.println("wrong borders");
         }
 
         StringBuilder data = new StringBuilder(mainData.substring(left, right));
@@ -33,43 +40,50 @@ public class Storage {
 
         long start = System.currentTimeMillis();
 
+        ZMQ.Poller poller = context.createPoller(1);
+        poller.register(responder, ZMQ.Poller.POLLIN);
 
-        putServerMessageTogetherAndSend("NEW");
+        putServerMessageTogetherAndSend(NEW);
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
+            poller.poll(1);
+
             if (System.currentTimeMillis() - start > 5000) {
                 start = System.currentTimeMillis();
-                putServerMessageTogetherAndSend("I STILL ALIVE");
+                putServerMessageTogetherAndSend(STILL_ALIVE);
             }
 
-            ZMsg msgReceive = ZMsg.recvMsg(responder);
+            if (poller.pollin(0)) {
+                ZMsg msgReceive = ZMsg.recvMsg(responder);
 
-            String adress = msgReceive.popString();
+                //GET
+                if (msgReceive.size() == 2) {
+                    ZMsg msg = new ZMsg();
+                    int index = Integer.parseInt(msgReceive.pollLast().toString());
 
-            //GET
-            if (msgReceive.size() == 1) {
-                int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
+                    msg.add(GET);
+                    ZFrame adress = msgReceive.pop();
+                    msg.add(adress);
+                    msg.add("" + data.charAt(index - left));
+                    System.out.println(msg);
+                    msg.send(responder);
 
-                ArrayList<String> frames = new ArrayList<>();
-                frames.add("GET");
-                frames.add(adress);
-                frames.add(String.valueOf(data.charAt(indexInteger - left)));
+                } else if (msgReceive.size() == 3) { //SET
+                    ZMsg msg = new ZMsg();
+                    String value = msgReceive.pollLast().toString();
+                    int index = Integer.parseInt(msgReceive.pollLast().toString());
+                    msg.add(SET);
+                    ZFrame adress = msgReceive.pop();
+                    msg.add(adress);
+                    data.setCharAt(index - left, value.charAt(0));
+                    msg.add(CHANGED);
+                    System.out.println(msg);
+                    msg.send(responder);
 
-                putCommandMessageTogetherAndSend(frames);
-
-            } else if (msgReceive.size() == 2) { //SET
-                int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
-                String setElem = msgReceive.popString();
-
-                data.setCharAt(indexInteger - left, setElem.charAt(0));
-
-                ArrayList<String> frames = new ArrayList<>();
-                frames.add("SET");
-                frames.add(adress);
-                frames.add("Character changed");
-
-                putCommandMessageTogetherAndSend(frames);
+                }
             }
+
+
         }
 
     }
@@ -81,14 +95,6 @@ public class Storage {
         msg.send(responder);
     }
 
-    private static void putCommandMessageTogetherAndSend(ArrayList<String> frames) {
-        ZMsg msg = new ZMsg();
 
-        for (String frame : frames) {
-            msg.add(frame);
-        }
-
-        msg.send(responder);
-    }
 
 }
