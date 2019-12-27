@@ -29,7 +29,7 @@ public class Storage {
 
         putMessageTogetherAndSend("NEW");
 
-        while (!Thread.currentThread().isInterrupted()) {
+        while (true) {
 
             if (System.currentTimeMillis() - start > 5000) {
                 start = System.currentTimeMillis();
