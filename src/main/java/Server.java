@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class Server {
 
-    private static HashMap<Pair<Integer, Integer>, Pair<ZFrame, Long>> storages;
+    private static HashMap<Pair<Integer, Integer>, Pair<ZFrame, Long>> storages = new HashMap<>();
 
     public static void main(String[] args) {
 
