@@ -24,6 +24,7 @@ public class Server {
         while (!Thread.currentThread().isInterrupted()) {
             items.poll();
 
+            //frontend
             if (items.pollin(0)) {
                 while (true) {
                     message = frontend.recv(0);
@@ -37,6 +38,7 @@ public class Server {
 
             }
 
+            //backend
             if (items.pollin(1)) {
                 message = backend.recv(0);
                 more = backend.hasReceiveMore();

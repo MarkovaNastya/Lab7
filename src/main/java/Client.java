@@ -25,23 +25,18 @@ public class Client {
 
             String[] commandSplit = command.split(" ");
 
-            if (commandSplit[0].equals("GET")) {
+            if (commandSplit[0].equals("GET") || commandSplit[0].equals("SET")) {
                 ZMsg msg = new ZMsg();
-                msg.add(commandSplit[0]);
-                msg.add(commandSplit[1]);
+                for (int i = 0; i < commandSplit.length; i++) {
+                    msg.add(commandSplit[i]);
+                }
                 msg.send(responder);
             }
 
-            if (commandSplit[0].equals("SET")) {
-                ZMsg msg = new ZMsg();
-                msg.add(commandSplit[0]);
-                msg.add(commandSplit[1]);
-                msg.add(commandSplit[2]);
-                msg.send(responder);
-            }
+            ZMsg response = ZMsg.recvMsg(responder);
+            System.out.println(response);
 
         }
-        
 
     }
 }
