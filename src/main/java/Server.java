@@ -61,11 +61,12 @@ public class Server {
 
                     if (command.equals(GET)) {
                         ZFrame index = message.pop();
+                        boolean detect = false;
                         int indexInteger = Integer.parseInt(String.valueOf(index));
 
                         for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
                             if (indexInteger >= storage.getKey().getKey() && indexInteger < storage.getKey().getValue() && isAlive(storage)) {
-
+                                detect = true;
                                 ArrayList<ZFrame> frames = new ArrayList<>();
                                 frames.add(storage.getValue().getKey().duplicate());
                                 frames.add(adress);
@@ -76,15 +77,20 @@ public class Server {
                             }
                         }
 
+                        if (!detect) {
+                            errorMsg(adress);
+                        }
+
                     } else if (command.equals(SET)) {
 
                         ZFrame index = message.pop();
+                        boolean detect = false;
                         int indexInteger = Integer.parseInt(String.valueOf(index));
                         ZFrame elem = message.pop();
 
                         for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
                             if (indexInteger >= storage.getKey().getKey() && indexInteger < storage.getKey().getValue() && isAlive(storage)) {
-
+                                detect = true;
                                 ArrayList<ZFrame> frames = new ArrayList<>();
                                 frames.add(storage.getValue().getKey().duplicate());
                                 frames.add(adress);
@@ -94,6 +100,10 @@ public class Server {
                                 break;
 
                             }
+                        }
+
+                        if (!detect) {
+                            errorMsg(adress);
                         }
 
                     }
@@ -162,5 +172,12 @@ public class Server {
         }
 
         msg.send(backend);
+    }
+
+    private static void errorMsg(ZFrame adress) {
+        ZMsg eMsg = new ZMsg();
+        eMsg.wrap(adress);
+        eMsg.add("Not found");
+        eMsg.send(frontend);
     }
 }
