@@ -27,7 +27,6 @@ public class Storage {
         responder = context.socket(SocketType.DEALER);
         responder.connect("tcp://localhost:5560");
         long start = System.currentTimeMillis();
-        boolean more;
 
 
         putServerMessageTogetherAndSend("NEW");
@@ -38,38 +37,34 @@ public class Storage {
                 putServerMessageTogetherAndSend("I STILL ALIVE");
             }
 
-            more = responder.hasReceiveMore();
-            if (more) {
-                ZMsg msgReceive = ZMsg.recvMsg(responder);
+            ZMsg msgReceive = ZMsg.recvMsg(responder);
 
-                String adress = msgReceive.popString();
+            String adress = msgReceive.popString();
 
-                //GET
-                if (msgReceive.size() == 1) {
-                    int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
+            //GET
+            if (msgReceive.size() == 1) {
+                int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
 
-                    ArrayList<String> frames = new ArrayList<>();
-                    frames.add("GET");
-                    frames.add(adress);
-                    frames.add(String.valueOf(data.charAt(indexInteger - left)));
+                ArrayList<String> frames = new ArrayList<>();
+                frames.add("GET");
+                frames.add(adress);
+                frames.add(String.valueOf(data.charAt(indexInteger - left)));
 
-                    putCommandMessageTogetherAndSend(frames);
+                putCommandMessageTogetherAndSend(frames);
 
-                } else if (msgReceive.size() == 2) { //SET
-                    int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
-                    String setElem = msgReceive.popString();
+            } else if (msgReceive.size() == 2) { //SET
+                int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
+                String setElem = msgReceive.popString();
 
-                    data.setCharAt(indexInteger - left, setElem.charAt(0));
+                data.setCharAt(indexInteger - left, setElem.charAt(0));
 
-                    ArrayList<String> frames = new ArrayList<>();
-                    frames.add("SET");
-                    frames.add(adress);
-                    frames.add("Character changed");
+                ArrayList<String> frames = new ArrayList<>();
+                frames.add("SET");
+                frames.add(adress);
+                frames.add("Character changed");
 
-                    putCommandMessageTogetherAndSend(frames);
-                }
+                putCommandMessageTogetherAndSend(frames);
             }
-
         }
 
     }
