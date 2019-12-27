@@ -44,16 +44,24 @@ public class Server {
                     String command = message.popString();
 
                     if (command.equals("GET")) {
-                        String index = message.popString();
-                        System.out.println(index);
+                        int index = Integer.parseInt(message.popString());
+
+                        for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
+
+                        }
+
                     } else if (command.equals("SET")) {
 
+                        int index = Integer.parseInt(message.popString());
+                        String elem = message.popString();
+                        System.out.println(index);
+                        System.out.println(elem);
+
+
                     }
 
 
-                    for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
 
-                    }
 
 
 
