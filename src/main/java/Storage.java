@@ -39,6 +39,7 @@ public class Storage {
 
             ZMsg msgReceive = ZMsg.recvMsg(responder);
 
+            System.out.println(msgReceive);
 
 
 

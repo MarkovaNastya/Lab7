@@ -65,14 +65,25 @@ public class Server {
 
                     } else if (command.equals("SET")) {
 
-                        int index = Integer.parseInt(message.popString());
-                        String elem = message.popString();
+                        ZFrame index = message.pop();
+                        int indexInteger = Integer.parseInt(String.valueOf(index));
+                        ZFrame elem = message.pop();
 
+                        for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
+                            if (indexInteger >= storage.getKey().getKey() && indexInteger < storage.getKey().getValue()) {
 
+                                ArrayList<ZFrame> frames = new ArrayList<>();
+                                frames.add(storage.getValue().getKey().duplicate());
+                                frames.add(adress);
+                                frames.add(index);
+                                frames.add(elem);
+                                putMessageTogetherAndSendToBackend(frames);
+                                break;
+
+                            }
+                        }
 
                     }
-
-
 
 
 
