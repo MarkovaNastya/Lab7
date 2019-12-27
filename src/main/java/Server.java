@@ -86,8 +86,6 @@ public class Server {
                     }
 
 
-
-
                     if (!more) {
                         break;
                     }
@@ -126,21 +124,12 @@ public class Server {
                         frontend.send(message.popString());
                     }
 
-
-
                     if (!more) {
                         break;
                     }
                 }
-
-
             }
-
-
         }
-
-
-
     }
 
 
