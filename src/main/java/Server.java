@@ -5,6 +5,7 @@ import org.zeromq.ZMQ.Socket;
 import zmq.poll.Poller;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Server {
 
@@ -35,6 +36,13 @@ public class Server {
                 while (true) {
                     message = ZMsg.recvMsg(frontend);
                     more = frontend.hasReceiveMore();
+                    System.out.println(message);
+
+
+                    for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
+
+                    }
+
 
 
                     if (!more) {
@@ -68,7 +76,7 @@ public class Server {
                                 new Pair<>(Integer.parseInt(interval[0]), Integer.parseInt(interval[1])),
                                 new Pair<>(adress, System.currentTimeMillis())
                         );
-                        System.out.println("replaced");
+
                     }
 
 
