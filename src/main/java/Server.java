@@ -50,6 +50,7 @@ public class Server {
                 more = backend.hasReceiveMore();
 
                 ZFrame adress = message.pop();
+                System.out.println(adress);
                 String command = message.popString();
 
                 System.out.println(command);
