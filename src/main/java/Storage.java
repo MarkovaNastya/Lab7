@@ -26,9 +26,11 @@ public class Storage {
         StringBuilder data = new StringBuilder(mainData.substring(left, right));
         System.out.println(data);
 
-        ZMQ.Context context = ZMQ.context(1);
-        responder = context.socket(SocketType.DEALER);
+        ZContext context = new ZContext();
+
+        ZMQ.Socket responder = context.createSocket(SocketType.DEALER);
         responder.connect(BACKEND_ADRESS);
+
         long start = System.currentTimeMillis();
 
 

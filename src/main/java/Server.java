@@ -20,15 +20,15 @@ public class Server {
 
     public static void main(String[] args) {
 
-        ZMQ.Context context = ZMQ.context(1);
+        ZContext context = new ZContext();
 
-        frontend = context.socket(SocketType.ROUTER);
+        frontend = context.createSocket(SocketType.ROUTER);
         frontend.bind(FRONTEND_ADRESS);
 
-        backend = context.socket(SocketType.ROUTER);
+        backend = context.createSocket(SocketType.ROUTER);
         backend.bind(BACKEND_ADRESS);
 
-        ZMQ.Poller items = context.poller(2);
+        ZMQ.Poller items = context.createPoller(2);
         items.register(frontend, ZMQ.Poller.POLLIN);
         items.register(backend, ZMQ.Poller.POLLIN);
 
