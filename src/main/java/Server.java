@@ -122,6 +122,7 @@ public class Server {
                         );
 
                     } else {
+                        message.wrap(message.pop());
                         frontend.send(message.popString());
                     }
 

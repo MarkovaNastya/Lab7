@@ -45,6 +45,7 @@ public class Storage {
                 int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
 
                 ArrayList<String> frames = new ArrayList<>();
+                frames.add("GET");
                 frames.add(adress);
                 frames.add(String.valueOf(data.charAt(indexInteger)));
 
@@ -57,6 +58,7 @@ public class Storage {
                 data.setCharAt(indexInteger, setElem.charAt(0));
 
                 ArrayList<String> frames = new ArrayList<>();
+                frames.add("SET");
                 frames.add(adress);
                 frames.add("Character changed");
 
