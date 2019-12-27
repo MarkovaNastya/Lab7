@@ -2,7 +2,6 @@ import javafx.util.Pair;
 import org.zeromq.ZContext;
 import org.zeromq.*;
 import org.zeromq.ZMQ.Socket;
-import zmq.poll.Poller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,13 +19,12 @@ public class Server {
     private final static String GET = "GET";
     private final static String SET = "SET";
     private final static String STILL_ALIVE = "STILL ALIVE";
+    private final static String NOT_FOUND = "Not found";
     private final static String DOUBLE_TRAIT = "//";
     private final static int TIMEOUT_MS = 5000;
     private final static int DOUBLE_TIMEOUT_MS = TIMEOUT_MS * 2;
 
-
-
-
+    
     public static void main(String[] args) {
 
         ZContext context = new ZContext();
@@ -60,9 +58,9 @@ public class Server {
                     String command = message.popString();
 
                     if (command.equals(GET)) {
-                        messageHandler(adress, message, GET);
+                        frontendMessageHandler(adress, message, GET);
                     } else if (command.equals(SET)) {
-                        messageHandler(adress, message, SET);
+                        frontendMessageHandler(adress, message, SET);
                     }
 
                     if (!more) {
@@ -133,12 +131,11 @@ public class Server {
     private static void errorMsg(ZFrame adress) {
         ZMsg eMsg = new ZMsg();
         eMsg.wrap(adress);
-        eMsg.add("Not found");
+        eMsg.add(NOT_FOUND);
         eMsg.send(frontend);
     }
 
-    private static void messageHandler(ZFrame adress, ZMsg message, String command) {
-
+    private static void frontendMessageHandler(ZFrame adress, ZMsg message, String command) {
 
             ZFrame index = message.pop();
             boolean detect = false;
