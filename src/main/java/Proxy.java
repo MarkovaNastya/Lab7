@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Server {
+public class Proxy {
 
     private static HashMap<Pair<Integer, Integer>, Pair<ZFrame, Long>> storages = new HashMap<>();
     private static Socket frontend;
@@ -17,7 +17,7 @@ public class Server {
     private final static String FRONTEND_ADRESS = "tcp://localhost:5559";
     private final static String NEW = "NEW";
     private final static String GET = "GET";
-    private final static String SET = "SET";
+    private final static String PUT = "PUT";
     private final static String NOTIFY = "NOTIFY";
     private final static String NOT_FOUND = "Not found";
     private final static String DOUBLE_TRAIT = "//";
@@ -59,8 +59,8 @@ public class Server {
 
                     if (command.equals(GET)) {
                         frontendMessageHandler(adress, message, GET);
-                    } else if (command.equals(SET)) {
-                        frontendMessageHandler(adress, message, SET);
+                    } else if (command.equals(PUT)) {
+                        frontendMessageHandler(adress, message, PUT);
                     }
 
                     if (!more) {
@@ -140,7 +140,7 @@ public class Server {
             int indexInteger = Integer.parseInt(String.valueOf(index));
 
             ZFrame elem = null;
-            if (command.equals(SET)) {
+            if (command.equals(PUT)) {
                 elem = message.pop();
             }
 
@@ -152,12 +152,15 @@ public class Server {
                     frames.add(adress);
                     frames.add(index);
 
-                    if (command.equals(SET)) {
+                    if (command.equals(PUT)) {
                         frames.add(elem);
                     }
-                    putMessageTogetherAndSendToBackend(frames);
-                    break;
 
+                    putMessageTogetherAndSendToBackend(frames);
+
+                    if (command.equals(GET)) {
+                        break;
+                    }
                 }
             }
 

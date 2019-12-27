@@ -1,7 +1,5 @@
 import org.zeromq.ZContext;
 import org.zeromq.*;
-import org.zeromq.ZMQ.Socket;
-import zmq.poll.Poller;
 
 import java.util.Scanner;
 
@@ -11,7 +9,7 @@ public class Client {
     private final static String FRONTEND_ADRESS = "tcp://localhost:5559";
     private final static String GET = "GET";
     private final static String STOP = "/STOP";
-    private final static String SET = "SET";
+    private final static String PUT = "PUT";
     private final static String SPACE = " ";
 
     public static void main(String[] args) {
@@ -34,7 +32,7 @@ public class Client {
 
             String[] commandSplit = command.split(SPACE);
 
-            if (commandSplit[0].equals(GET) || commandSplit[0].equals(SET)) {
+            if (commandSplit[0].equals(GET) || commandSplit[0].equals(PUT)) {
                 ZMsg msg = new ZMsg();
                 for (int i = 0; i < commandSplit.length; i++) {
                     msg.add(commandSplit[i]);

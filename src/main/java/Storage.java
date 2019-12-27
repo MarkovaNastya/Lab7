@@ -13,7 +13,7 @@ public class Storage {
     private final static String BACKEND_ADRESS = "tcp://localhost:5560";
     private final static String NEW = "NEW";
     private final static String GET = "GET";
-    private final static String SET = "SET";
+    private final static String PUT = "PUT";
     private final static String CHANGED = "Character changed";
     private final static String NOTIFY = "NOTIFY";
     private final static String DOUBLE_TRAIT = "//";
@@ -73,7 +73,7 @@ public class Storage {
                     ZMsg msg = new ZMsg();
                     String value = msgReceive.pollLast().toString();
                     int index = Integer.parseInt(msgReceive.pollLast().toString());
-                    msg.add(SET);
+                    msg.add(PUT);
                     ZFrame adress = msgReceive.pop();
                     msg.add(adress);
                     data.setCharAt(index - left, value.charAt(0));
