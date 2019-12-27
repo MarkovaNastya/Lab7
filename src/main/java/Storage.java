@@ -30,6 +30,7 @@ public class Storage {
         putMessageTogetherAndSend("NEW");
 
         while (true) {
+            System.out.println("end sicle");
 
             if (System.currentTimeMillis() - start > 5000) {
                 start = System.currentTimeMillis();
@@ -38,7 +39,6 @@ public class Storage {
 
             ZMsg msgReceive = ZMsg.recvMsg(responder);
 
-            System.out.println("end sicle");
 
 
 
