@@ -100,6 +100,7 @@ public class Server {
                 while (true) {
                     message = ZMsg.recvMsg(backend);
                     more = backend.hasReceiveMore();
+                    System.out.println(message);
 
                     ZFrame adress = message.pop();
                     String command = message.popString();
@@ -120,6 +121,7 @@ public class Server {
                                 new Pair<>(adress, System.currentTimeMillis())
                         );
 
+                    } else {
                     }
 
 
