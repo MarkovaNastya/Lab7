@@ -21,6 +21,9 @@ public class Server {
     private final static String SET = "SET";
     private final static String STILL_ALIVE = "STILL ALIVE";
     private final static String DOUBLE_TRAIT = "//";
+    private final static int TIMEOUT_MS = 5000;
+    private final static int DOUBLE_TIMEOUT_MS = TIMEOUT_MS * 2;
+
 
 
 
@@ -142,6 +145,12 @@ public class Server {
         }
     }
 
+    private static void isAlive(Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage) {
+        long now = System.currentTimeMillis();
+        if (now - storage.getValue().getValue() > DOUBLE_TIMEOUT_MS) {
+            
+        }
+    }
 
     private static void putMessageTogetherAndSendToBackend(ArrayList<ZFrame> frames) {
         ZMsg msg = new ZMsg();

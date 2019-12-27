@@ -19,6 +19,7 @@ public class Storage {
     private final static String CHANGED = "Character changed";
     private final static String STILL_ALIVE = "STILL ALIVE";
     private final static String DOUBLE_TRAIT = "//";
+    private final static int TIMEOUT_MS = 5000;
 
 
 
@@ -49,7 +50,7 @@ public class Storage {
         while (!Thread.currentThread().isInterrupted()) {
             poller.poll(1);
 
-            if (System.currentTimeMillis() - start > 5000) {
+            if (System.currentTimeMillis() - start > TIMEOUT_MS) {
                 start = System.currentTimeMillis();
                 putServerMessageTogetherAndSend(STILL_ALIVE);
             }

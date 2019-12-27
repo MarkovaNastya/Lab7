@@ -9,6 +9,10 @@ import java.util.Scanner;
 public class Client {
 
     private final static String FRONTEND_ADRESS = "tcp://localhost:5559";
+    private final static String GET = "GET";
+    private final static String STOP = "/STOP";
+    private final static String SET = "SET";
+    private final static String SPACE = " ";
 
     public static void main(String[] args) {
 
@@ -24,13 +28,13 @@ public class Client {
 
             String command = in.nextLine();
 
-            if (command.startsWith("/STOP")) {
+            if (command.startsWith(STOP)) {
                 break;
             }
 
-            String[] commandSplit = command.split(" ");
+            String[] commandSplit = command.split(SPACE);
 
-            if (commandSplit[0].equals("GET") || commandSplit[0].equals("SET")) {
+            if (commandSplit[0].equals(GET) || commandSplit[0].equals(SET)) {
                 ZMsg msg = new ZMsg();
                 for (int i = 0; i < commandSplit.length; i++) {
                     msg.add(commandSplit[i]);
