@@ -5,14 +5,21 @@ import zmq.poll.Poller;
 
 public class Server {
     public static void main(String[] args) {
-        ZContext context = new ZContext();
 
-        Socket frontend = context.createSocket(SocketType.ROUTER);
-        Socket backend = context.createSocket(SocketType.ROUTER);
 
-        ZMQ.Poller items = context.createPoller(2);
+        ZMQ.Context context = ZMQ.context(1);
+
+        Socket frontend = context.socket(SocketType.ROUTER);
+        frontend.bind("tcp://localhost:5559");
+
+        Socket backend = context.socket(SocketType.ROUTER);
+        backend.bind("tcp://localhost:5559");
+        
+        ZMQ.Poller items = context.poller(2);
         items.register(frontend, ZMQ.Poller.POLLIN);
         items.register(backend, ZMQ.Poller.POLLIN);
+
+        boolean more = false;
 
 
 
