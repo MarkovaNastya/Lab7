@@ -59,6 +59,8 @@ public class Server {
                     String[] interval = message.popString().split("//");
                     String left = interval[0];
                     String right = interval[1];
+                    System.out.println(left);
+                    System.out.println(right);
 
                     storages.put(
                             new Pair<>(Integer.parseInt(left), Integer.parseInt(right)),
