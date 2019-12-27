@@ -21,6 +21,7 @@ public class Storage {
         }
 
         StringBuilder data = new StringBuilder(mainData.substring(left, right));
+        System.out.println(data);
 
         ZMQ.Context context = ZMQ.context(1);
         responder = context.socket(SocketType.DEALER);
