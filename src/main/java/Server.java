@@ -1,9 +1,15 @@
+import javafx.util.Pair;
 import org.zeromq.ZContext;
 import org.zeromq.*;
 import org.zeromq.ZMQ.Socket;
 import zmq.poll.Poller;
 
+import java.util.HashMap;
+
 public class Server {
+
+    private static HashMap<Pair<Integer, Integer>, Pair<ZFrame, Long>> storages;
+
     public static void main(String[] args) {
 
         ZMQ.Context context = ZMQ.context(1);
@@ -19,7 +25,7 @@ public class Server {
         items.register(backend, ZMQ.Poller.POLLIN);
 
         boolean more = false;
-        byte[] message;
+        ZMsg message = new ZMsg();
 
         while (!Thread.currentThread().isInterrupted()) {
             items.poll();
@@ -27,7 +33,7 @@ public class Server {
             //frontend
             if (items.pollin(0)) {
                 while (true) {
-                    message = frontend.recv(0);
+                    message = ZMsg.recvMsg(frontend);
                     more = frontend.hasReceiveMore();
 
 
@@ -40,8 +46,32 @@ public class Server {
 
             //backend
             if (items.pollin(1)) {
-                message = backend.recv(0);
+                message = ZMsg.recvMsg(backend);
                 more = backend.hasReceiveMore();
+
+                ZFrame adress = message.pop();
+                String command = message.popString();
+
+                System.out.println(command);
+
+                if (command.equals("NEW")) {
+                    String[] interval = message.popString().split("//");
+                    String left = interval[0];
+                    String right = interval[1];
+
+                    storages.put(
+                            new Pair<>(Integer.parseInt(left), Integer.parseInt(right)),
+                            new Pair<>(adress, System.currentTimeMillis())
+                    );
+
+                    System.out.println("new storage added");
+
+                }
+
+
+                
+
+
 
 
                 if (!more) {
