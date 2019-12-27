@@ -46,40 +46,30 @@ public class Server {
 
             //backend
             if (items.pollin(1)) {
-                message = ZMsg.recvMsg(backend);
-                more = backend.hasReceiveMore();
+                while (true) {
+                    message = ZMsg.recvMsg(backend);
+                    more = backend.hasReceiveMore();
 
-                ZFrame adress = message.pop();
-                System.out.println(adress);
-                String command = message.popString();
+                    ZFrame adress = message.pop();
+                    String command = message.popString();
 
-                System.out.println(command);
+                    if (command.equals("NEW")) {
+                        String[] interval = message.popString().split("//");
 
-                if (command.equals("NEW")) {
-                    String[] interval = message.popString().split("//");
-                    String left = interval[0];
-                    String right = interval[1];
-                    System.out.println(left);
-                    System.out.println(right);
+                        storages.put(
+                                new Pair<>(Integer.parseInt(interval[0]), Integer.parseInt(interval[1])),
+                                new Pair<>(adress, System.currentTimeMillis())
+                        );
 
-                    storages.put(
-                            new Pair<>(Integer.parseInt(left), Integer.parseInt(right)),
-                            new Pair<>(adress, System.currentTimeMillis())
-                    );
+                    }
 
-                    System.out.println("new storage added");
 
+
+                    if (!more) {
+                        break;
+                    }
                 }
 
-
-
-
-
-
-
-                if (!more) {
-                    break;
-                }
 
             }
 
