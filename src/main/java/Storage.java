@@ -30,6 +30,7 @@ public class Storage {
 
         if (left > right || left > mainData.length() - 1 || right > mainData.length() - 1) {
             System.out.println("wrong borders");
+            return;
         }
 
         StringBuilder data = new StringBuilder(mainData.substring(left, right));
