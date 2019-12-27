@@ -39,9 +39,10 @@ public class Client {
             }
 
             ZMsg response = ZMsg.recvMsg(frontend);
-            System.out.println(response.pop().toString());
+            System.out.println(response);
+//            System.out.println(response.pop().toString());
 
-            response.destroy();
+//            response.destroy();
         }
 
     }
