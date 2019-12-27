@@ -4,6 +4,7 @@ import org.zeromq.*;
 import org.zeromq.ZMQ.Socket;
 import zmq.poll.Poller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,6 +51,11 @@ public class Server {
 
                         for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
                             if (index >= storage.getKey().getKey() && index < storage.getKey().getValue()) {
+
+                                ArrayList<ZFrame> frames = new ArrayList<>();
+                                frames.add(storage.getValue().getKey().duplicate());
+                                frames.add(adress);
+                                frames.add(index);
 
                             }
                         }
@@ -120,10 +126,10 @@ public class Server {
     }
 
 
-    private static void putMessageTogetherAndSendToBackend(String frame) {
+    private static void putMessageTogetherAndSendToBackend(String[] frames) {
         ZMsg msg = new ZMsg();
 
-        
+
 
         msg.send(backend);
     }
