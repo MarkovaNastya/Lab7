@@ -1,7 +1,5 @@
 import org.zeromq.*;
-import org.zeromq.ZMQ.Socket;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
@@ -17,7 +15,7 @@ public class Storage {
     private final static String GET = "GET";
     private final static String SET = "SET";
     private final static String CHANGED = "Character changed";
-    private final static String STILL_ALIVE = "STILL ALIVE";
+    private final static String NOTIFY = "NOTIFY";
     private final static String DOUBLE_TRAIT = "//";
     private final static int TIMEOUT_MS = 5000;
 
@@ -53,7 +51,7 @@ public class Storage {
 
             if (System.currentTimeMillis() - start > TIMEOUT_MS) {
                 start = System.currentTimeMillis();
-                putServerMessageTogetherAndSend(STILL_ALIVE);
+                putServerMessageTogetherAndSend(NOTIFY);
             }
 
             if (poller.pollin(0)) {

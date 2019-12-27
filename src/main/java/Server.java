@@ -18,7 +18,7 @@ public class Server {
     private final static String NEW = "NEW";
     private final static String GET = "GET";
     private final static String SET = "SET";
-    private final static String STILL_ALIVE = "STILL ALIVE";
+    private final static String NOTIFY = "NOTIFY";
     private final static String NOT_FOUND = "Not found";
     private final static String DOUBLE_TRAIT = "//";
     private final static int TIMEOUT_MS = 5000;
@@ -88,7 +88,7 @@ public class Server {
                                 new Pair<>(adress, System.currentTimeMillis())
                         );
 
-                    } else if (command.equals(STILL_ALIVE)) {
+                    } else if (command.equals(NOTIFY)) {
                         String[] interval = message.popString().split(DOUBLE_TRAIT);
 
                         storages.replace(
