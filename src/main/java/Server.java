@@ -61,6 +61,14 @@ public class Server {
                                 new Pair<>(adress, System.currentTimeMillis())
                         );
 
+                    } else if (command.equals("I STILL ALIVE")) {
+                        String[] interval = message.popString().split("//");
+
+                        storages.replace(
+                                new Pair<>(Integer.parseInt(interval[0]), Integer.parseInt(interval[1])),
+                                new Pair<>(adress, System.currentTimeMillis())
+                        );
+                        System.out.println("replaced");
                     }
 
 
