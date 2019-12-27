@@ -1,6 +1,7 @@
 import org.zeromq.*;
 import org.zeromq.ZMQ.Socket;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
@@ -27,19 +28,29 @@ public class Storage {
         long start = System.currentTimeMillis();
 
 
-        putMessageTogetherAndSend("NEW");
+        putServerMessageTogetherAndSend("NEW");
 
         while (true) {
-            System.out.println("end sicle");
-
             if (System.currentTimeMillis() - start > 5000) {
                 start = System.currentTimeMillis();
-                putMessageTogetherAndSend("I STILL ALIVE");
+                putServerMessageTogetherAndSend("I STILL ALIVE");
             }
 
             ZMsg msgReceive = ZMsg.recvMsg(responder);
 
-            System.out.println(msgReceive);
+            ZFrame adress = msgReceive.pop();
+
+            //GET
+            if (msgReceive.size() == 1) {
+                int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
+
+                ArrayList<ZFrame> frames = new ArrayList<>();
+                frames.add(adress);
+                frames.add(data.charAt(indexInteger));
+
+
+
+            }
 
 
 
@@ -48,10 +59,21 @@ public class Storage {
 
     }
 
-    private static void putMessageTogetherAndSend(String frame) {
+    private static void putServerMessageTogetherAndSend(String frame) {
         ZMsg msg = new ZMsg();
         msg.add(frame);
         msg.add(left + "//" + right);
         msg.send(responder);
     }
+
+    private static void putCommandMessageTogetherAndSend(ArrayList<ZFrame> frames) {
+        ZMsg msg = new ZMsg();
+
+        for (ZFrame frame : frames) {
+            msg.add(frame);
+        }
+
+        msg.send(responder);
+    }
+
 }
