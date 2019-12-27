@@ -64,7 +64,7 @@ public class Server {
                     } else if (command.equals(SET)) {
                         messageHandler(adress, message, SET);
                     }
-                    
+
                     if (!more) {
                         break;
                     }
