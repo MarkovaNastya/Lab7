@@ -33,7 +33,9 @@ public class Storage {
             System.out.println("end sicle");
 
             if (System.currentTimeMillis() - start > 5000) {
+                System.out.println(start);
                 start = System.currentTimeMillis();
+                System.out.println(start);
                 putMessageTogetherAndSend("I STILL ALIVE");
             }
 
