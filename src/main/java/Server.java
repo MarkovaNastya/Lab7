@@ -64,7 +64,7 @@ public class Server {
                         int indexInteger = Integer.parseInt(String.valueOf(index));
 
                         for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
-                            if (indexInteger >= storage.getKey().getKey() && indexInteger < storage.getKey().getValue()) {
+                            if (indexInteger >= storage.getKey().getKey() && indexInteger < storage.getKey().getValue() && isAlive(storage)) {
 
                                 ArrayList<ZFrame> frames = new ArrayList<>();
                                 frames.add(storage.getValue().getKey().duplicate());
@@ -83,7 +83,7 @@ public class Server {
                         ZFrame elem = message.pop();
 
                         for (Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage : storages.entrySet()) {
-                            if (indexInteger >= storage.getKey().getKey() && indexInteger < storage.getKey().getValue()) {
+                            if (indexInteger >= storage.getKey().getKey() && indexInteger < storage.getKey().getValue() && isAlive(storage)) {
 
                                 ArrayList<ZFrame> frames = new ArrayList<>();
                                 frames.add(storage.getValue().getKey().duplicate());
@@ -145,11 +145,13 @@ public class Server {
         }
     }
 
-    private static void isAlive(Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage) {
+    private static boolean isAlive(Map.Entry<Pair<Integer, Integer>, Pair<ZFrame, Long>> storage) {
         long now = System.currentTimeMillis();
         if (now - storage.getValue().getValue() > DOUBLE_TIMEOUT_MS) {
-            
+            storages.remove(storage);
+            return false;
         }
+        return true;
     }
 
     private static void putMessageTogetherAndSendToBackend(ArrayList<ZFrame> frames) {
