@@ -20,7 +20,7 @@ public class Storage {
             System.out.println("wrond borders");
         }
 
-        String data = mainData.substring(left, right);
+        StringBuilder data = new StringBuilder(mainData.substring(left, right));
 
         ZMQ.Context context = ZMQ.context(1);
         responder = context.socket(SocketType.DEALER);
@@ -38,23 +38,30 @@ public class Storage {
 
             ZMsg msgReceive = ZMsg.recvMsg(responder);
 
-            ZFrame adress = msgReceive.pop();
+            String adress = msgReceive.popString();
 
             //GET
             if (msgReceive.size() == 1) {
                 int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
 
-                ArrayList<ZFrame> frames = new ArrayList<>();
+                ArrayList<String> frames = new ArrayList<>();
                 frames.add(adress);
-                frames.add(data.charAt(indexInteger));
+                frames.add(String.valueOf(data.charAt(indexInteger)));
 
+                putCommandMessageTogetherAndSend(frames);
 
+            } else if (msgReceive.size() == 2) { //SET
+                int indexInteger = Integer.parseInt(String.valueOf(msgReceive.pop()));
+                String setElem = msgReceive.popString();
 
+                data.setCharAt(indexInteger, setElem.charAt(0));
+
+                ArrayList<String> frames = new ArrayList<>();
+                frames.add(adress);
+                frames.add("Character changed");
+
+                putCommandMessageTogetherAndSend(frames);
             }
-
-
-
-
         }
 
     }
@@ -66,10 +73,10 @@ public class Storage {
         msg.send(responder);
     }
 
-    private static void putCommandMessageTogetherAndSend(ArrayList<ZFrame> frames) {
+    private static void putCommandMessageTogetherAndSend(ArrayList<String> frames) {
         ZMsg msg = new ZMsg();
 
-        for (ZFrame frame : frames) {
+        for (String frame : frames) {
             msg.add(frame);
         }
 
