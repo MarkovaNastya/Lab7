@@ -18,7 +18,7 @@ public class Server {
         frontend.bind("tcp://localhost:5559");
 
         Socket backend = context.socket(SocketType.ROUTER);
-        backend.bind("tcp://localhost:5559");
+        backend.bind("tcp://localhost:5560");
 
         ZMQ.Poller items = context.poller(2);
         items.register(frontend, ZMQ.Poller.POLLIN);
@@ -69,7 +69,7 @@ public class Server {
                 }
 
 
-                
+
 
 
 
